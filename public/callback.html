@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>TikTok Callback</title>
+  </head>
+  <body>
+    <h2>✅ TikTok Auth Callback</h2>
+    <p id="message">Waiting for code...</p>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get("code");
+      const state = params.get("state");
+      if (code) {
+        document.getElementById("message").innerText =
+          "Authorization code: " + code + "\nState: " + state;
+      } else {
+        document.getElementById("message").innerText =
+          "No code found in URL";
+      }
+    </script>
+  </body>
+</html>
