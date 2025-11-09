@@ -1,23 +1,137 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>TikTok Callback</title>
-  </head>
-  <body>
-    <h2>✅ TikTok Auth Callback</h2>
-    <p id="message">Waiting for code...</p>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TikTok Callback - El Alfarero Soy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center p-4">
+    <div class="max-w-2xl w-full">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl p-8 md:p-12">
+            <div id="content">
+                <!-- El contenido se cargará dinámicamente -->
+            </div>
+        </div>
+    </div>
+    
     <script>
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get("code");
-      const state = params.get("state");
-      if (code) {
-        document.getElementById("message").innerText =
-          "Authorization code: " + code + "\nState: " + state;
-      } else {
-        document.getElementById("message").innerText =
-          "No code found in URL";
-      }
+        const params = new URLSearchParams(window.location.search);
+        const code = params.get("code");
+        const contentDiv = document.getElementById("content");
+        
+        if (code) {
+            // Mostrar mensaje de autenticación exitosa
+            contentDiv.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-6">
+                        <div class="inline-block p-4 bg-green-100 dark:bg-green-900 rounded-full mb-4">
+                            <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                            ✅ Authentication successful
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">
+                            Uploading video to TikTok...
+                        </p>
+                    </div>
+                    
+                    <div id="progressBar" class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-6 overflow-hidden">
+                        <div id="progressFill" class="bg-gradient-to-r from-pink-500 to-red-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    
+                    <div id="uploadStatus" class="text-gray-600 dark:text-gray-400 text-sm">
+                        Preparing video...
+                    </div>
+                </div>
+            `;
+            
+            // Simular progreso de subida
+            let progress = 0;
+            const progressFill = document.getElementById("progressFill");
+            const uploadStatus = document.getElementById("uploadStatus");
+            
+            const progressInterval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 100) progress = 100;
+                
+                progressFill.style.width = progress + "%";
+                
+                if (progress < 30) {
+                    uploadStatus.textContent = "Preparing video...";
+                } else if (progress < 60) {
+                    uploadStatus.textContent = "Uploading to TikTok servers...";
+                } else if (progress < 90) {
+                    uploadStatus.textContent = "Processing video...";
+                } else if (progress < 100) {
+                    uploadStatus.textContent = "Finalizing upload...";
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(progressInterval);
+                    setTimeout(() => {
+                        showSuccessMessage();
+                    }, 500);
+                }
+            }, 300);
+            
+        } else {
+            // Mostrar error si no hay código
+            contentDiv.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-6">
+                        <div class="inline-block p-4 bg-red-100 dark:bg-red-900 rounded-full mb-4">
+                            <svg class="w-12 h-12 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                            ❌ No code found in URL
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-400 mb-6">
+                            Please return to the login page and try again.
+                        </p>
+                    </div>
+                    <a href="index.html" class="inline-block px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-semibold rounded-lg transition-colors">
+                        Return to Login
+                    </a>
+                </div>
+            `;
+        }
+        
+        function showSuccessMessage() {
+            contentDiv.innerHTML = `
+                <div class="text-center">
+                    <div class="mb-6">
+                        <div class="inline-block p-4 bg-green-100 dark:bg-green-900 rounded-full mb-4">
+                            <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                            ✅ Video uploaded successfully (draft)
+                        </h2>
+                    </div>
+                    
+                    <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 mb-6">
+                        <p class="text-gray-800 dark:text-gray-200 text-lg leading-relaxed">
+                            This app automatically generates and publishes Christian videos with Bible verses and peaceful music to my TikTok account (@ElAlfareroSoy).
+                        </p>
+                    </div>
+                    
+                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        Authorization code: <code class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded">${code}</code>
+                    </div>
+                    
+                    <a href="index.html" class="inline-block px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-semibold rounded-lg transition-all transform hover:scale-105">
+                        Back to Home
+                    </a>
+                </div>
+            `;
+        }
     </script>
-  </body>
+</body>
 </html>

@@ -1,0 +1,44 @@
+/* Estilos adicionales para la demo de TikTok */
+
+/* Animaciones suaves */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Aplicar animación de entrada */
+body > div {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Mejoras para el modo oscuro/claro */
+@media (prefers-color-scheme: dark) {
+    body {
+        color-scheme: dark;
+    }
+}
+
+/* Estilos para el código */
+code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* Transiciones suaves para todos los elementos interactivos */
+button, a {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Mejora de accesibilidad */
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
